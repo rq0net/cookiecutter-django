@@ -45,9 +45,14 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 {%- else %}
 DATABASES = {
     "default": env.db("DATABASE_URL", default="postgres://{% if cookiecutter.windows == 'y' %}localhost{% endif %}/{{cookiecutter.project_slug}}"),
+    "common": env.db("DATABASE_COMMON_URL", default="postgres://{% if cookiecutter.windows == 'y' %}localhost{% endif %}/{{cookiecutter.project_slug}}"),
 }
 {%- endif %}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASE_ROUTERS = ["common.dbrouter.AuthRouter", ]
+
+
+
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -71,9 +76,6 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
 {%- if cookiecutter.use_celery == 'y' %}
     "django_celery_beat",
 {%- endif %}
@@ -101,14 +103,7 @@ MIGRATION_MODULES = {"sites": "{{ cookiecutter.project_slug }}.contrib.sites.mig
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
-# https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "users.User"
-# https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
-# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -295,19 +290,7 @@ CELERY_TASK_SOFT_TIME_LIMIT = 60
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 {%- endif %}
-# django-allauth
-# ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "{{cookiecutter.project_slug}}.users.adapters.AccountAdapter"
-# https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "{{cookiecutter.project_slug}}.users.adapters.SocialAccountAdapter"
+
 {% if cookiecutter.use_compressor == 'y' -%}
 # django-compressor
 # ------------------------------------------------------------------------------
@@ -331,5 +314,55 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 
 {%- endif %}
+
+
+# django-rest-framework
+# -------------------------------------------------------------------------------
+# django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+
+
+# KeyCloak
+USE_KEYCLOAK = env.bool("USE_KEYCLOAK", False)
+
+if USE_KEYCLOAK is not None:
+    INSTALLED_APPS += [
+        'django_keycloak.apps.KeycloakAppConfig',
+        'caesar_user',
+    ]
+
+    MIDDLEWARE += [
+        'django_keycloak.middleware.BaseKeycloakMiddleware',
+        'django_keycloak.middleware.KeycloakStatelessBearerAuthenticationMiddleware',
+    ]
+    PASSWORD_HASHERS = [
+        'django_keycloak.hashers.PBKDF2SHA512PasswordHasher',
+    ]
+    AUTHENTICATION_BACKENDS = [
+        'django.contrib.auth.backends.ModelBackend',
+        'django_keycloak.auth.backends.KeycloakAuthorizationCodeBackend',
+        'django_keycloak.auth.backends.KeycloakIDTokenAuthorizationBackend',
+    ]
+
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += ['django_keycloak.auth.authentication.KeycloakIDAuthentication', ]
+
+
+    KEYCLOAK_OIDC_PROFILE_MODEL = 'django_keycloak.OpenIdConnectProfile'
+    KEYCLOAK_BEARER_AUTHENTICATION_EXEMPT_PATHS = [
+        r'^admin/',
+        r'^docs/',
+    ]
+#     KEYCLOAK_SKIP_SSL_VERIFY = True
+
+    LOGIN_URL = 'keycloak_login'
+
 # Your stuff...
+
 # ------------------------------------------------------------------------------

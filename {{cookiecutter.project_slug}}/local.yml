@@ -25,18 +25,6 @@ services:
       - "8000:8000"
     command: /start
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
-    image: {{ cookiecutter.project_slug }}_production_postgres
-    container_name: postgres
-    volumes:
-      - local_postgres_data:/var/lib/postgresql/data:Z
-      - local_postgres_data_backups:/backups:z
-    env_file:
-      - ./.envs/.local/.postgres
-
   docs:
     image: {{ cookiecutter.project_slug }}_local_docs
     container_name: docs
@@ -63,10 +51,6 @@ services:
   {%- endif %}
   {%- if cookiecutter.use_celery == 'y' %}
 
-  redis:
-    image: redis:6
-    container_name: redis
-
   celeryworker:
     <<: *django
     image: {{ cookiecutter.project_slug }}_local_celeryworker
@@ -92,14 +76,6 @@ services:
       {%- endif %}
     ports: []
     command: /start-celerybeat
-
-  flower:
-    <<: *django
-    image: {{ cookiecutter.project_slug }}_local_flower
-    container_name: flower
-    ports:
-      - "5555:5555"
-    command: /start-flower
 
   {%- endif %}
   {%- if cookiecutter.js_task_runner == 'Gulp' %}
