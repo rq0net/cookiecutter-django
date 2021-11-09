@@ -8,10 +8,17 @@ IPYTHONDIR=/app/.ipython
 # ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
 
+
+
 # Celery
 # ------------------------------------------------------------------------------
 
 # Flower
 CELERY_FLOWER_USER=!!!SET CELERY_FLOWER_USER!!!
 CELERY_FLOWER_PASSWORD=!!!SET CELERY_FLOWER_PASSWORD!!!
+
+CELERY_BROKER_URL="${REDIS_URL}"
 {%- endif %}
+
+# Keycloark
+USE_KEYCLOAK=yes
