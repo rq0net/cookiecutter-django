@@ -12,7 +12,6 @@ services:
     image: {{ cookiecutter.project_slug }}_local_django
     container_name: django
     depends_on:
-      - postgres
       {%- if cookiecutter.use_mailhog == 'y' %}
       - mailhog
       {%- endif %}
@@ -69,8 +68,6 @@ services:
     image: {{ cookiecutter.project_slug }}_local_celerybeat
     container_name: celerybeat
     depends_on:
-      - redis
-      - postgres
       {%- if cookiecutter.use_mailhog == 'y' %}
       - mailhog
       {%- endif %}
