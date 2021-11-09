@@ -615,6 +615,13 @@ Listed in alphabetical order.
     <td>purplediane88</td>
   </tr>
   <tr>
+    <td>Diego Montes</td>
+    <td>
+      <a href="https://github.com/d57montes">d57montes</a>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
     <td>Dong Huynh</td>
     <td>
       <a href="https://github.com/trungdong">trungdong</a>
@@ -1077,6 +1084,13 @@ Listed in alphabetical order.
     <td></td>
   </tr>
   <tr>
+    <td>Liam Brenner</td>
+    <td>
+      <a href="https://github.com/SableWalnut">SableWalnut</a>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
     <td>Lin Xianyi</td>
     <td>
       <a href="https://github.com/iynaix">iynaix</a>
@@ -1264,6 +1278,13 @@ Listed in alphabetical order.
       <a href="https://github.com/nicolas471">nicolas471</a>
     </td>
     <td>moby_dick91</td>
+  </tr>
+  <tr>
+    <td>Noah H</td>
+    <td>
+      <a href="https://github.com/nthall">nthall</a>
+    </td>
+    <td></td>
   </tr>
   <tr>
     <td>Oleg Russkin</td>

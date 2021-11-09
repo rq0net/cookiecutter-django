@@ -1,6 +1,6 @@
 pytz==2021.3  # https://github.com/stub42/pytz
 python-slugify==5.0.2  # https://github.com/un33k/python-slugify
-Pillow==8.3.2  # https://github.com/python-pillow/Pillow
+Pillow==8.4.0  # https://github.com/python-pillow/Pillow
 {%- if cookiecutter.use_compressor == "y" %}
 {%- if cookiecutter.windows == 'y' and cookiecutter.use_docker == 'n' %}
 rcssmin==1.0.6 --install-option="--without-c-extensions"  # https://github.com/ndparker/rcssmin
@@ -17,7 +17,7 @@ redis==3.5.3  # https://github.com/andymccurdy/redis-py
 hiredis==2.0.0  # https://github.com/redis/hiredis-py
 {%- endif %}
 {%- if cookiecutter.use_celery == "y" %}
-celery~=5.1.2  # pyup: < 6.0  # https://github.com/celery/celery
+celery~=5.2.0  # pyup: < 6.0  # https://github.com/celery/celery
 django-celery-beat==2.2.1  # https://github.com/celery/django-celery-beat
 django-celery-results~=2.0.1 # https://github.com/celery/django-celery-results
 {%- if cookiecutter.use_docker == 'y' %}
