@@ -3,7 +3,9 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 
-import environ
+import environ, os
+from urllib.parse import parse_qs
+
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # {{ cookiecutter.project_slug }}/
@@ -40,14 +42,34 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-{% if cookiecutter.use_docker == "y" -%}
-DATABASES = {"default": env.db("DATABASE_URL")}
-{%- else %}
+
+config_options = {}
+
+if env.str("POSTGRES_DB_PARAMETERS", None):
+    for k, v in parse_qs(env.str("POSTGRES_DB_PARAMETERS", None)).items():
+        config_options.update({k: v[0]})
+
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres://{% if cookiecutter.windows == 'y' %}localhost{% endif %}/{{cookiecutter.project_slug}}"),
-    "common": env.db("DATABASE_COMMON_URL", default="postgres://{% if cookiecutter.windows == 'y' %}localhost{% endif %}/{{cookiecutter.project_slug}}"),
+    "default": {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str("POSTGRESQL_DATABASE", "gaius_{{ cookiecutter.project_slug }}"),
+        'USER': env.str("POSTGRESQL_DB_USER"),
+        'PASSWORD': env.str("POSTGRESQL_DB_PASS"),
+        'HOST':  env.str("POSTGRESQL_DB_HOST"),
+        'PORT': env.str("POSTGRESQL_DB_PORT"),
+        'OPTIONS': config_options
+    },
+    "common": {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str("POSTGRES_DB_COMMON", "gaius_common"),
+        'USER': env.str("POSTGRESQL_DB_USER"),
+        'PASSWORD': env.str("POSTGRESQL_DB_PASS"),
+        'HOST':  env.str("POSTGRESQL_DB_HOST"),
+        'PORT': env.str("POSTGRESQL_DB_PORT"),
+        'OPTIONS': config_options
+    },
 }
-{%- endif %}
+
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASE_ROUTERS = ["common.dbrouter.AuthRouter", ]
 
@@ -270,7 +292,17 @@ if USE_TZ:
     # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-timezone
     CELERY_TIMEZONE = TIME_ZONE
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+
+REDIS_HOST = os.getenv('REDIS_HOST', 'redis-master')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'hZg7kXzvPN')
+REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_DATABASE = os.getenv('REDIS_DATABASE', '1')
+REDIS_DATABASE_CELERY = os.getenv('REDIS_DATABASE_CELERY', '0')
+REDIS_DATABASE_IP_BLOCK = os.getenv('REDIS_DATABASE_IP_BLOCK', '15')
+
+CELERY_BROKER_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DATABASE_CELERY}'
+
+
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_backend
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-accept_content
