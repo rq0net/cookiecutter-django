@@ -3,6 +3,55 @@ All enhancements and patches to Cookiecutter Django will be documented in this f
 
 <!-- GENERATOR_PLACEHOLDER -->
 
+## [2021-11-16]
+### Changed
+- Upgrade JS dependencies and upgrade to node 16 ([#3400](https://github.com/cookiecutter/cookiecutter-django/pull/3400))
+### Fixed
+- Fix ungraceful Celery workers shutdown in container ([#3405](https://github.com/cookiecutter/cookiecutter-django/pull/3405))
+### Updated
+- Update psycopg2-binary to 2.9.2 ([#3411](https://github.com/cookiecutter/cookiecutter-django/pull/3411))
+- Update psycopg2 to 2.9.2 ([#3410](https://github.com/cookiecutter/cookiecutter-django/pull/3410))
+- Update redis to 4.0.0 ([#3406](https://github.com/cookiecutter/cookiecutter-django/pull/3406))
+- Update django-coverage-plugin to 2.0.2 ([#3409](https://github.com/cookiecutter/cookiecutter-django/pull/3409))
+- Update black to 21.10b0 ([#3408](https://github.com/cookiecutter/cookiecutter-django/pull/3408))
+
+## [2021-11-15]
+### Updated
+- Update django-allauth to 0.46.0 ([#3407](https://github.com/cookiecutter/cookiecutter-django/pull/3407))
+
+## [2021-11-13]
+### Fixed
+- Fix incorrect node version in `package.json` ([#3399](https://github.com/cookiecutter/cookiecutter-django/pull/3399))
+
+## [2021-11-12]
+### Changed
+- Add Django major/minor release table maker in GitHub issues ([#3288](https://github.com/cookiecutter/cookiecutter-django/pull/3288))
+- Upgrade to Bootstrap 5 ([#3276](https://github.com/cookiecutter/cookiecutter-django/pull/3276))
+### Updated
+- Update requests to 2.26.0 ([#3397](https://github.com/cookiecutter/cookiecutter-django/pull/3397))
+- Update crispy-bootstrap5 to 0.6 ([#3396](https://github.com/cookiecutter/cookiecutter-django/pull/3396))
+
+## [2021-11-11]
+### Changed
+- Build all images on CI ([#3394](https://github.com/cookiecutter/cookiecutter-django/pull/3394))
+### Updated
+- Update coverage to 6.1.2 ([#3393](https://github.com/cookiecutter/cookiecutter-django/pull/3393))
+
+## [2021-11-10]
+### Changed
+- Update sphinx to 4.3.0 ([#3392](https://github.com/cookiecutter/cookiecutter-django/pull/3392))
+### Updated
+- Auto-update pre-commit hooks ([#3389](https://github.com/cookiecutter/cookiecutter-django/pull/3389))
+- Update jinja2 to 3.0.3 ([#3388](https://github.com/cookiecutter/cookiecutter-django/pull/3388))
+
+## [2021-11-09]
+### Changed
+- refactor: remove user API methods parameter ([#3385](https://github.com/cookiecutter/cookiecutter-django/pull/3385))
+- Get GitHub repo from environment ([#3387](https://github.com/cookiecutter/cookiecutter-django/pull/3387))
+### Updated
+- Update celery to 5.2.0 ([#3384](https://github.com/cookiecutter/cookiecutter-django/pull/3384))
+- Update isort to 5.10.1 ([#3386](https://github.com/cookiecutter/cookiecutter-django/pull/3386))
+
 ## [2021-11-08]
 ### Changed
 - Update docker and non-docker configs to Debian 11 (bullseye) ([#3372](https://github.com/cookiecutter/cookiecutter-django/pull/3372))
