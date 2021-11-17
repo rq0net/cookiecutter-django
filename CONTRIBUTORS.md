@@ -1413,6 +1413,13 @@ Listed in alphabetical order.
     <td></td>
   </tr>
   <tr>
+    <td>rq0net</td>
+    <td>
+      <a href="https://github.com/rq0net">rq0net</a>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
     <td>Russell Davies</td>
     <td>
       <a href="https://github.com/"></a>
