@@ -113,16 +113,20 @@ if env.bool("DJANGO_USE_STORAGE", False):
 # ------------------------
 {% endif -%}
 {% if cookiecutter.use_whitenoise == 'y' -%}
+    # Whitenoise
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 {% elif cookiecutter.cloud_provider == 'AWS' -%}
+    # AWS
     STATICFILES_STORAGE = "{{cookiecutter.project_slug}}.utils.storages.StaticRootS3Boto3Storage"
-# COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+    # COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
     STATIC_URL = f"https://{aws_s3_domain}/static/"
 {% elif cookiecutter.cloud_provider == 'GCP' -%}
+    # GCP
     STATICFILES_STORAGE = "{{cookiecutter.project_slug}}.utils.storages.StaticRootGoogleCloudStorage"
-# COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
+    # COLLECTFAST_STRATEGY = "collectfast.strategies.gcloud.GoogleCloudStrategy"
     STATIC_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/static/"
 {% elif cookiecutter.cloud_provider == 'AZURE' -%}
+    # AZURE
     STATIC_LOCATION = "static"
     STATICFILES_STORAGE = "gaius_common.utils.storages.AzureStaticStorage"
     #https://gaiusstorage.blob.core.windows.net/static/image_2021_11_11T02_59_05_877Z.png
