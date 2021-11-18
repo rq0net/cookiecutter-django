@@ -3,6 +3,10 @@ All enhancements and patches to Cookiecutter Django will be documented in this f
 
 <!-- GENERATOR_PLACEHOLDER -->
 
+## [2021-11-17]
+### Changed
+- pul ([#2](https://github.com/rq0net/cookiecutter-django/pull/2))
+
 ## [2021-11-16]
 ### Changed
 - Upgrade JS dependencies and upgrade to node 16 ([#3400](https://github.com/cookiecutter/cookiecutter-django/pull/3400))
